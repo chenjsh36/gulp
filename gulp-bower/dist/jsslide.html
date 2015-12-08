@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jsSlider</title>
+</head>
+<style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .content {
+        width: 300px;
+        height: 300px;
+        position: relative;
+    }
+	ul{
+		list-style: none;
+	}
+
+    .fibo-slider {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: rgba(0,0,0,.5);
+    }
+    .fibo-slider li {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+        transform: scale(1,1);
+        transition: .5s opacity;
+
+    }
+    .fibo-slider li.scale {
+        opacity: 0;
+        transform: scale(1.4, 1.4);
+        transition: .5s all;
+    }
+    .fibo-slider li img {
+        width: 100%;
+    }
+</style>
+<body>
+	<p>hello world</p>
+	<div class="content">
+		<ul class="fibo-slider">
+	        <li>
+	            <img src="http://getuikit.com/docs/images/placeholder_800x400_1.jpg">
+	        </li>
+	        <li class="scale">
+	            <img src="http://getuikit.com/docs/images/placeholder_800x400_2.jpg">
+	        </li>
+	        <li class="scale">
+	            <img src="http://getuikit.com/docs/images/placeholder_800x400_3.jpg">
+	        </li>
+		</ul>		
+	</div>
+	<button id="next">next</button>
+    <script type="text/javascript" src="./../../widgets/jquery/jquery.js"></script>
+    <script type="text/javascript">
+    	var i = 0;
+    	$('#next').on('click', function(e) {
+    		i = i === 2 ? 0 : ++i;
+    		$('.fibo-slider li').eq(i).removeClass('scale').siblings().addClass('scale');
+    	});
+    </script>
+</body>
+</html>

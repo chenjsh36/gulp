@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>PIXI</title>
+</head>
+<body>
+
+	<script type="text/javascript" src="./pages/pixi/pixi.min.js"></script>
+	<script type="text/javascript">
+		/*
+		
+		// 舞台
+		//接收一个16进制的值，用于背景的颜色
+		var stage = new PIXI.Stage(0xffffff);
+
+		// 画布(renderer)
+		// 选用canvas或webGL进行渲染的一个区域
+		var renderer = PIXI.autoDetectRenderer(400, 300);
+
+		// 材质
+		var texture = PIXI.Texture.fromImage('bunny.png');
+
+		// 精灵
+		var sprite = new PIXI.Sprite.fromImage('img/img1.png');
+		// or create by texture
+		var texture2 = PIXI.Texture.fromImage('bunny.png');
+		var sprite2 = new PIXI.Sprite(texture2);
+
+		// 设置样式
+		sprite.position.x = 30;
+		sprite.position.y = 20;
+		// and so on
+		
+		stage.click = function(data) {
+			var event = data.originalEvent;
+		}
+
+		sprite.click = function(data) {
+			var event = data.originalEvent;
+			var target = event.target;
+			// 阻止默认行为
+			event.preventDefault(); 
+		}
+		// event 事件：mousedown\over\out\move\up\upoutside, touchstart\touchend, tap
+		*/
+	
+		var stage = new PIXI.Container();
+		var renderer = PIXI.autoDetectRenderer(1000, 1000, {backgroundColor: 0xffffff});
+
+		document.body.appendChild(renderer.view);
+		var sprite = new PIXI.Sprite.fromImage('./pages/pixi/img/bunny.jpg');
+		sprite.position.x = 200;
+		sprite.position.y = 300;
+		sprite.anchor.x = 0.5;
+		sprite.anchor.y = 0.5;
+		stage.addChild(sprite);
+
+
+		stage.click = stage.tap = function (data) {
+			console.log(data.originalEvent.target);
+		}
+		sprite.mousedown = sprite.touchstart = function(data) {
+			data.originalEvent.preventDefault();
+			this.data = data;
+			this.alpha = 0.9;
+			this.dragging = true;
+			console.log('mousedown');
+		}
+
+		requestAnimationFrame(animate);
+		function animate() {
+			sprite.rotation += 0.01;
+			renderer.render(stage);
+			requestAnimationFrame(animate);
+		}
+	</script>
+</body>
+</html>

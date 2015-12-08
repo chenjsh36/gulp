@@ -1,0 +1,56 @@
+html
+	head
+		meta(charset="UTF-8")
+		block title
+		link(rel="stylesheet" type="text/css" href="widgets/bootstrap/css/bootstrap.css")
+		link(rel="stylesheet" type="text/css" href="widgets/jquery/jquery-ui.min.css")
+		link(rel="stylesheet" type="text/css" href="pages/header/header.css")
+		meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0")
+		script.
+			window._trackJs = {token: 'f413d7e4141b49ebb713e64aba670283'};
+		script(src="https://d2zah9y47r7bi2.cloudfront.net/releases/current/tracker.js")
+	body.container-fluid
+		header
+			a(href="/") Chenjsh36
+			.dropdown.select.inline-block#chart-select
+				button.btn.btn-default.btn-sm.dropdown-toggle(type="button" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="true") 
+					label 选择图表类型
+					span.caret
+				ul.dropdown-menu(aria-labelledby="dropdownMenu1")
+					li: a(href="/index.html") 柱形图
+					li: a(href="/funnel.html") 漏斗图
+
+		.content.row
+			.side-bar.col-md-2
+				.operate
+					.operate-item#background-color
+						label(title="全图默认背景") backgroundColor:
+						input.form-control.inline-block(type="text" placeholder="支持rgba，默认为无，透明")
+					.operate-item#color
+						label(title="数值系列的颜色列表") color:
+						input.form-control.inline-block(type="text" placeholder="当系列数量个数比颜色列表长度大时将循环选取")
+					.operate-item#calculable
+						label.block(title="是否启用拖拽重计算特性") calculable:
+						.btn-group.inline-block(role="group")
+							button.btn.btn-default(type="button") true
+							button.btn.btn-default.active(type="button") false
+					.operate-item#animation
+						label.block(title="是否开启动画，默认开启") animation:
+						.btn-group.inline-block(role="group")
+							button.btn.btn-default.active(type="button") true
+							button.btn.btn-default(type="button") false
+					block sidebar
+			.show-content.col-md-10
+				block content
+
+
+		script(type="text/javascript" src="./../../widgets/jquery/jquery.js")
+		script(type="text/javascript" src="./../../widgets/bootstrap/js/bootstrap.js")
+		script(type="text/javascript" src="./../../widgets/jquery/jquery-ui.min.js")
+		block scripts
+		script(type="text/javascript" src="pages/header/header.js")
+		script(type="text/javascript" src="pages/header/chartOption.js")
+		script.
+			trackJs.track('ahoy trackjs!');
+			console.log('helloasdf');
+

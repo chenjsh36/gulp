@@ -1,0 +1,34 @@
+extends ./../header/header.jade
+
+block title
+	title index
+	link(rel="stylesheet" type="text/css" href="pages/index/index.css")
+block sidebar
+
+		.operate-item
+			label size: 
+			button.btn.btn-default.size.select 
+				label Active
+		.operate-item
+			label(主题颜色) theme: 
+			.dropdown.select#theme
+				button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="true") 
+					label normal
+					span.caret
+				ul.dropdown-menu(aria-labelledby="dropdownMenu1")
+					li: a(href="#") normal
+					li: a(href="#") dark
+		.operate-item#bar-width
+			label.block(title="柱形宽度") gap( 0% ~ 100% ):
+			#bar-width-slider
+block content
+	.chart-ms
+		h3 直角坐标系-柱形图
+		p 柱形图的宽度会受到柱形图间距影响 
+		p 落落大方 你还要我怎样
+	#chart
+
+block scripts
+	script(src="widgets/echarts/echarts/build/dist/echarts.js")
+	script(src="pages/index/loadchart.js")
+	script(src="pages/index/index.js")

@@ -1,0 +1,64 @@
+
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="widgets/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="widgets/jquery/jquery-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="pages/header/header.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <script>window._trackJs = {token: 'f413d7e4141b49ebb713e64aba670283'};</script>
+    <script src="https://d2zah9y47r7bi2.cloudfront.net/releases/current/tracker.js"></script>
+  </head>
+  <body class="container-fluid">
+    <header><a href="/">Chenjsh36</a>
+      <div id="chart-select" class="dropdown select inline-block">
+        <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="btn btn-default btn-sm dropdown-toggle"> 
+          <label>选择图表类型</label><span class="caret"></span>
+        </button>
+        <ul aria-labelledby="dropdownMenu1" class="dropdown-menu">
+          <li><a href="/index.html">柱形图</a></li>
+          <li><a href="/funnel.html">漏斗图</a></li>
+        </ul>
+      </div>
+    </header>
+    <div class="content row">
+      <div class="side-bar col-md-2">
+        <div class="operate">
+          <div id="background-color" class="operate-item">
+            <label title="全图默认背景">backgroundColor:</label>
+            <input type="text" placeholder="支持rgba，默认为无，透明" class="form-control inline-block"/>
+          </div>
+          <div id="color" class="operate-item">
+            <label title="数值系列的颜色列表">color:</label>
+            <input type="text" placeholder="当系列数量个数比颜色列表长度大时将循环选取" class="form-control inline-block"/>
+          </div>
+          <div id="calculable" class="operate-item">
+            <label title="是否启用拖拽重计算特性" class="block">calculable:</label>
+            <div role="group" class="btn-group inline-block">
+              <button type="button" class="btn btn-default">true</button>
+              <button type="button" class="btn btn-default active">false</button>
+            </div>
+          </div>
+          <div id="animation" class="operate-item">
+            <label title="是否开启动画，默认开启" class="block">animation:</label>
+            <div role="group" class="btn-group inline-block">
+              <button type="button" class="btn btn-default active">true</button>
+              <button type="button" class="btn btn-default">false</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="show-content col-md-10">
+      </div>
+    </div>
+    <script type="text/javascript" src="./../../widgets/jquery/jquery.js"></script>
+    <script type="text/javascript" src="./../../widgets/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="./../../widgets/jquery/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="pages/header/header.js"></script>
+    <script type="text/javascript" src="pages/header/chartOption.js"></script>
+    <script>
+      trackJs.track('ahoy trackjs!');
+      console.log('helloasdf');
+    </script>
+  </body>
+</html>

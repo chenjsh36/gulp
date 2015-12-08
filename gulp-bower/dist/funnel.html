@@ -1,0 +1,134 @@
+
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="pages/funnel/funnel.css"/>
+    <link rel="stylesheet" type="text/css" href="widgets/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="widgets/jquery/jquery-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="pages/header/header.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <script>window._trackJs = {token: 'f413d7e4141b49ebb713e64aba670283'};</script>
+    <script src="https://d2zah9y47r7bi2.cloudfront.net/releases/current/tracker.js"></script>
+  </head>
+  <body class="container-fluid">
+    <header><a href="/">Chenjsh36</a>
+      <div id="chart-select" class="dropdown select inline-block">
+        <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="btn btn-default btn-sm dropdown-toggle"> 
+          <label>选择图表类型</label><span class="caret"></span>
+        </button>
+        <ul aria-labelledby="dropdownMenu1" class="dropdown-menu">
+          <li><a href="/index.html">柱形图</a></li>
+          <li><a href="/funnel.html">漏斗图</a></li>
+        </ul>
+      </div>
+    </header>
+    <div class="content row">
+      <div class="side-bar col-md-2">
+        <div class="operate">
+          <div id="background-color" class="operate-item">
+            <label title="全图默认背景">backgroundColor:</label>
+            <input type="text" placeholder="支持rgba，默认为无，透明" class="form-control inline-block"/>
+          </div>
+          <div id="color" class="operate-item">
+            <label title="数值系列的颜色列表">color:</label>
+            <input type="text" placeholder="当系列数量个数比颜色列表长度大时将循环选取" class="form-control inline-block"/>
+          </div>
+          <div id="calculable" class="operate-item">
+            <label title="是否启用拖拽重计算特性" class="block">calculable:</label>
+            <div role="group" class="btn-group inline-block">
+              <button type="button" class="btn btn-default">true</button>
+              <button type="button" class="btn btn-default active">false</button>
+            </div>
+          </div>
+          <div id="animation" class="operate-item">
+            <label title="是否开启动画，默认开启" class="block">animation:</label>
+            <div role="group" class="btn-group inline-block">
+              <button type="button" class="btn btn-default active">true</button>
+              <button type="button" class="btn btn-default">false</button>
+            </div>
+          </div>
+          <div class="operate-item">
+            <label>size: </label>
+            <button class="btn btn-default size select"> 
+              <label>Active</label>
+            </button>
+          </div>
+          <div class="operate-item">
+            <label 主题颜色="主题颜色">theme: </label>
+            <div id="theme" class="dropdown select">
+              <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="btn btn-default dropdown-toggle"> 
+                <label>normal</label><span class="caret"></span>
+              </button>
+              <ul aria-labelledby="dropdownMenu1" class="dropdown-menu">
+                <li><a href="#">normal</a></li>
+                <li><a href="#">dark</a></li>
+              </ul>
+            </div>
+          </div>
+          <div id="sort" class="operate-item">
+            <label title="数据排序， 可以取ascending, descending">sort:</label>
+            <input type="text" placeholder="ascending" class="form-control inline-block"/>
+          </div>
+          <div id="align" class="operate-item">
+            <label title="水平方向对齐布局类型，默认居中对齐，可用选项还有：'left' | 'right' | 'center'">align:</label>
+            <div role="group" class="btn-group inline-block">
+              <button type="button" class="btn btn-default">left</button>
+              <button type="button" class="btn btn-default active">center</button>
+              <button type="button" class="btn btn-default">right</button>
+            </div>
+          </div>
+          <div id="min" class="operate-item">
+            <label title="指定的最小值和最小值" class="block">min-max ( 0 - 100 ):</label>
+            <div id="min-slider"></div>
+          </div>
+          <div id="min-size" class="operate-item">
+            <label title="最小值min和最大值max映射到总宽度的比例，如果需要最小值的图形并不是尖端三角，可设置minSize实现" class="block">minSize-maxSize ( 0% ~ 100% ):</label>
+            <div id="min-size-slider"></div>
+          </div>
+          <div id="legend-hover-link" class="operate-item">
+            <label title="是否启用图例（legend）hover时的联动响应（高亮显示）" class="block">legendHoverLink:</label>
+            <div role="group" class="btn-group inline-block">
+              <button type="button" class="btn btn-default active">true</button>
+              <button type="button" class="btn btn-default">false</button>
+            </div>
+          </div>
+          <div id="gap" class="operate-item">
+            <label title="数据图形间距" class="block">gap( 0 ~ 100 ):</label>
+            <div id="gap-slider"></div>
+          </div>
+          <div id="x1" class="operate-item">
+            <label title="左上角横坐标" class="block">x( 0 ~ 100 ):</label>
+            <div id="x1-slider"></div>
+          </div>
+          <div id="y1" class="operate-item">
+            <label title="左上角纵坐标" class="block">y( 0 ~ 100 ):</label>
+            <div id="y1-slider"></div>
+          </div>
+          <div id="x2" class="operate-item">
+            <label title="右下角横坐标" class="block">x2( 0 ~ 100 ):</label>
+            <div id="x2-slider"></div>
+          </div>
+          <div id="y2" class="operate-item">
+            <label title="右下角纵坐标" class="block">y2( 0 ~ 100 ):</label>
+            <div id="y2-slider"></div>
+          </div>
+        </div>
+      </div>
+      <div class="show-content col-md-10">
+        <div id="chart"></div>
+      </div>
+    </div>
+    <script type="text/javascript" src="./../../widgets/jquery/jquery.js"></script>
+    <script type="text/javascript" src="./../../widgets/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="./../../widgets/jquery/jquery-ui.min.js"></script>
+    <script src="widgets/echarts/echarts/build/dist/echarts.js"></script>
+    <script src="pages/funnel/loadchart.js"></script>
+    <script type="text/javascript" src="pages/header/header.js"></script>
+    <script type="text/javascript" src="pages/header/chartOption.js"></script>
+    <script>
+      trackJs.track('ahoy trackjs!');
+      console.log('helloasdf');
+    </script>
+  </body>
+</html>

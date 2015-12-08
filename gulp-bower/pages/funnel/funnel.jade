@@ -1,0 +1,64 @@
+extends ./../header/header.jade
+
+block title
+	title index
+	link(rel="stylesheet" type="text/css" href="pages/funnel/funnel.css")
+block sidebar
+	.operate-item
+		label size: 
+		button.btn.btn-default.size.select 
+			label Active
+	.operate-item
+		label(主题颜色) theme: 
+		.dropdown.select#theme
+			button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="true") 
+				label normal
+				span.caret
+			ul.dropdown-menu(aria-labelledby="dropdownMenu1")
+				li: a(href="#") normal
+				li: a(href="#") dark
+	.operate-item#sort
+		label(title="数据排序， 可以取ascending, descending") sort:
+		input.form-control.inline-block(type="text" placeholder="ascending")
+	.operate-item#align
+		label(title="水平方向对齐布局类型，默认居中对齐，可用选项还有：'left' | 'right' | 'center'") align:
+		.btn-group.inline-block(role="group")
+			button.btn.btn-default(type="button") left
+			button.btn.btn-default.active(type="button") center
+			button.btn.btn-default(type="button") right
+	.operate-item#min
+		label.block(title="指定的最小值和最小值") min-max ( 0 - 100 ):
+		#min-slider
+	.operate-item#min-size
+		label.block(title="最小值min和最大值max映射到总宽度的比例，如果需要最小值的图形并不是尖端三角，可设置minSize实现") minSize-maxSize ( 0% ~ 100% ):
+		#min-size-slider
+	.operate-item#legend-hover-link
+		label.block(title="是否启用图例（legend）hover时的联动响应（高亮显示）") legendHoverLink:
+		.btn-group.inline-block(role="group")
+			button.btn.btn-default.active(type="button") true
+			button.btn.btn-default(type="button") false
+	.operate-item#gap
+		label.block(title="数据图形间距") gap( 0 ~ 100 ):
+		#gap-slider
+
+	.operate-item#x1
+		label.block(title="左上角横坐标") x( 0 ~ 100 ):
+		#x1-slider
+	.operate-item#y1
+		label.block(title="左上角纵坐标") y( 0 ~ 100 ):
+		#y1-slider
+			
+	.operate-item#x2
+		label.block(title="右下角横坐标") x2( 0 ~ 100 ):
+		#x2-slider
+	.operate-item#y2
+		label.block(title="右下角纵坐标") y2( 0 ~ 100 ):
+		#y2-slider
+
+block content
+	#chart
+	
+
+block scripts
+	script(src="widgets/echarts/echarts/build/dist/echarts.js")
+	script(src="pages/funnel/loadchart.js")
