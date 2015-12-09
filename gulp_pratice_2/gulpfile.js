@@ -22,24 +22,33 @@ var gulp = require('gulp'),
 	runsequence = require('run-sequence'),// 顺序执行工具
 	gutil = require('gulp-util'),//打印工具
 	coffeelint = require('gulp-coffeelint'),
-	stylish = require('coffeelint-stylish')
+	stylish = require('coffeelint-stylish'),
+	htmlmin = require('gulp-htmlmin'),
+	autoprefixer = require('gulp-autoprefixer'),
+	minifycss = require('gulp-minify-css'),
+	revcollect = require('gulp-rev-collector')
 	;
 
+var browsersync_server = browsersync.create();
+var reload = browsersync_server.reload;
+var wiredepstream = wiredep.stream;
 /**
  * Gulp path initial
  */
+// 顶级目录
 var root = {
 	src: 'src',
 	dev: 'dev',
 	dist: 'dist'
 }
+// 开发环境路径
 var path = {
 	views: {
 		src: [root.src + '/pages/**/*.jade'],
 		dev: root.dev + '/',
 		dist: root.dist + '/'
 	},
-	less: {
+	styles: {
 		src: [root.src + '/pages/**/*.less'],
 		dev: root.dev + '/pages',
 		dist: root.dist + '/pages'
@@ -58,6 +67,7 @@ var path = {
 		src: root.dev
 	}
 }
+// 打包环境路径
 
 var module_path = {
 	browsersync: {
@@ -109,14 +119,15 @@ gulp.task('views', function(){
 	return gulp.src(path.views.src)
 		.pipe(plumber())
 		.pipe(gwatch(path.views.src))
-		.pipe(filter_notdel)
 		.pipe(jade({pretty: true}))
 		.pipe(rename(function(path){
 			path.dirname = '';
 		}))
 		.pipe(gulp.dest(path.views.dev))
+		.pipe(reload({stream: true}))
 		.pipe(notify({message: 'Views jade task complete'}));
 });
+
 
 
 gulp.task('validate_coffee', function() {
@@ -134,15 +145,18 @@ gulp.task('scripts', [], function(){
 		.pipe(coffeelint.reporter(stylish))
 		.pipe(coffee())
 		.pipe(gulp.dest(path.scripts.dev))
+		.pipe(reload({stream: true}))
 		.pipe(notify({message: 'Scripts task complete'}));
 });
 
 gulp.task('less', function() {
-	return gulp.src(path.less.src)
+	return gulp.src(path.styles.src)
 		.pipe(plumber())
-		.pipe(gwatch(path.less.src))
+		.pipe(gwatch(path.styles.src))
 		.pipe(less())
-		.pipe(gulp.dest(path.less.dev))
+	    .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
+		.pipe(gulp.dest(path.styles.dev))
+		.pipe(reload({stream: true}))
 		.pipe(notify({message:'Less task complete'}));
 });
 
@@ -151,37 +165,55 @@ gulp.task('clean', function() {
 		.pipe(clean());
 });
 
-
-gulp.task('default', ['clean'], function(){
-	return gulp.start('views', 'scripts', 'less', 'watch');
-});
-
 gulp.task('watch', function(err){
 	return gwatch(root.src + '/**', function(event) {
 		// console.log(event.name, event.verbose, event.base, event)
 		if (event.event === 'unlink') {
 			runsequence('clean',
-								['views', 'scripts']
+								['wiredep', 'scripts']
 				);
 		}
 	});
 
-	// gulp.src(path.views.src)
-	// 	.pipe(gwatch(path.views.src))
-	// 	.pipe(filter_del)
-	// 	.pipe(rename(function(path_){
-	// 		path_.dirname = '';
-	// 	}))
-	// 	.pipe(gulp.dest(path.views.dev))
-	// 	.pipe(clean());
 });
 
 gulp.task('browsersync', function() {
-	var bs = browsersync.create();
-	bs.init({
+	browsersync.init({
 		files: module_path.browsersync.src,
 		server: {
 			baseDir: root.dev
 		}
 	});
+});
+
+
+gulp.task('default', ['clean', 'browsersync'], function(){
+	return gulp.start('views', 'scripts', 'less', 'watch');
+});
+
+
+/**
+ * build
+ * 代码压缩
+ */
+gulp.task('clean:build', function(){
+	return gulp.src([root.dist], {read: false})
+		.pipe(clean());
+});
+
+gulp.task('minify', ['clean:build'], function(){
+	gulp.src(path.views.dev + '/*.html')
+		.pipe(htmlmin({collapseWhitespace: true}))
+		.pipe(gulp.dest(path.views.dist))
+		.pipe(notify({message: 'Html minify task complete'}));
+
+	gulp.src(path.scripts.dev + '/**/*.js')
+		.pipe(uglify())
+		.pipe(gulp.dest(path.scripts.dist))
+		.pipe(notify({message: 'Script minify task complete'}));
+
+	gulp.src(path.styles.dev + '/**/*.css')
+		.pipe(minifycss())
+		.pipe(gulp.dest(path.styles.dist))
+		.pipe(notify({message: 'Style minify task complete'}));
 });
