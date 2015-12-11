@@ -53,9 +53,14 @@ var path = {
     dist: root.dist + '/pages'
   },
   scripts: {
-    src: [root.src + '/**/**/*.coffee'],
-    dev: root.dev + '',
-    dist: root.dist + ''
+    src: [root.src + '/pages/**/*.coffee'],
+    dev: root.dev + '/pages',
+    dist: root.dist + '/pages'
+  },
+  own_module: {
+    src: [root.src + '/own_module/**/*.coffee'],
+    dev: root.dev + '/own_module',
+    dist: root.dist + '/own_module'
   },
   images: {
     src: [root.src + '/pages/**/img/*'],
@@ -127,9 +132,8 @@ gulp.task('views', function(){
     .pipe(notify({message: 'Views jade task complete'}));
 });
 
-
-gulp.task('browserify_coffee', function(){
-  return gulp.src(path.scripts.src, { read: false })
+gulp.task('browserify_module', function(){
+  return gulp.src(path.own_module.src, { read: false })
     .pipe(plumber())
     .pipe(coffeelint())
     .pipe(coffeelint.reporter(stylish))
@@ -139,7 +143,25 @@ gulp.task('browserify_coffee', function(){
       extensions: ['.coffee']
     }))
     .pipe(rename(function(path){
-      console.log('path is : ', path);
+      path.extname = '.js'
+    }))
+    .pipe(gulp.dest(path.own_module.dev))
+    .pipe(reload({stream: true}))
+    .pipe(notify({message: 'Browserify_module task complete'}))
+    ;
+});
+gulp.task('browserify_coffee', function(){
+  return gulp.src(path.scripts.src, { read: false })
+    .pipe(plumber())
+    .pipe(gwatch(path.scripts.src))
+    .pipe(coffeelint())
+    .pipe(coffeelint.reporter(stylish))
+    .pipe(browserify({
+      debug: true,
+      transform: ['coffeeify'],
+      extensions: ['.coffee']
+    }))
+    .pipe(rename(function(path){
       path.extname = '.js'
     }))
     .pipe(gulp.dest(path.scripts.dev))
@@ -191,9 +213,10 @@ gulp.task('watch', function(err){
         );
     }
   });
-  gwatch(path.scripts.src, function(event) {
+  // 由于使用了browserify，一个文件的改变会影响所有其它引用到他的文件，所以应该重新编译
+  gwatch(path.own_module.src, function(event) {
     if (event.event !== 'unlink') {
-      runsequence('browserify_coffee');       
+      runsequence('browserify_module', 'browserify_coffee');       
     }
   })
 
@@ -210,7 +233,8 @@ gulp.task('browsersync', function() {
 
 
 gulp.task('default', ['clean', 'browsersync'], function(){
-  return gulp.start('views', 'browserify_coffee', 'less', 'watch');
+  // return gulp.start('views', 'browserify_module', 'browserify_coffee', 'less', 'watch');
+  runsequence('browserify_module', ['views', 'browserify_coffee', 'less', 'watch']);
 });
 
 
