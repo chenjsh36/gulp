@@ -120,7 +120,7 @@ var filter_notdel = filter(isNotDelete);
  * Gulp works
  */
 gulp.task('views', function(){
-  return gulp.src(path.views.src)
+  gulp.src(path.views.src)
     .pipe(plumber())
     .pipe(gwatch(path.views.src))
     .pipe(jade({pretty: true}))
@@ -129,14 +129,13 @@ gulp.task('views', function(){
     }))
     .pipe(gulp.dest(path.views.dev))
     .pipe(reload({stream: true}))
-    .pipe(notify({message: 'Views jade task complete'}));
+    ;
 });
 
 gulp.task('browserify_module', function(){
-  return gulp.src(path.own_module.src, { read: false })
+  gulp.src(path.own_module.src, { read: false })
     .pipe(plumber())
-    .pipe(coffeelint())
-    .pipe(coffeelint.reporter(stylish))
+    .pipe(gwatch(path.own_module.src, {read: false}))
     .pipe(browserify({
       debug: true,
       transform: ['coffeeify'],
@@ -151,11 +150,9 @@ gulp.task('browserify_module', function(){
     ;
 });
 gulp.task('browserify_coffee', function(){
-  return gulp.src(path.scripts.src, { read: false })
+  gulp.src(path.scripts.src, { read: false })
     .pipe(plumber())
-    .pipe(gwatch(path.scripts.src))
-    .pipe(coffeelint())
-    .pipe(coffeelint.reporter(stylish))
+    .pipe(gwatch(path.scripts.src), {read: false })
     .pipe(browserify({
       debug: true,
       transform: ['coffeeify'],
@@ -166,18 +163,17 @@ gulp.task('browserify_coffee', function(){
     }))
     .pipe(gulp.dest(path.scripts.dev))
     .pipe(reload({stream: true}))
-    .pipe(notify({message: 'Browserify_coffee task complete'}))
     ;
 });
 gulp.task('validate_coffee', function() {
-  return gulp.src(path.scripts.src)
+  gulp.src(path.scripts.src)
     .pipe(plumber())
     .pipe(gwatch(path.scripts.src))
     .pipe(coffeelint())
     .pipe(coffeelint.reporter());
 });
 gulp.task('scripts', [], function(){
-  return gulp.src(path.scripts.src)
+  gulp.src(path.scripts.src)
     .pipe(gwatch(path.scripts.src))
     .pipe(plumber())
     .pipe(coffeelint())
@@ -189,7 +185,7 @@ gulp.task('scripts', [], function(){
 });
 
 gulp.task('less', function() {
-  return gulp.src(path.styles.src)
+  gulp.src(path.styles.src)
     .pipe(plumber())
     .pipe(gwatch(path.styles.src))
     .pipe(less())
@@ -216,7 +212,7 @@ gulp.task('watch', function(err){
   // 由于使用了browserify，一个文件的改变会影响所有其它引用到他的文件，所以应该重新编译
   gwatch(path.own_module.src, function(event) {
     if (event.event !== 'unlink') {
-      runsequence('browserify_module', 'browserify_coffee');       
+      runsequence('browserify_coffee');       
     }
   })
 
@@ -232,9 +228,9 @@ gulp.task('browsersync', function() {
 });
 
 
-gulp.task('default', ['clean', 'browsersync'], function(){
+gulp.task('default', ['clean'], function(){
   // return gulp.start('views', 'browserify_module', 'browserify_coffee', 'less', 'watch');
-  runsequence('browserify_module', ['views', 'browserify_coffee', 'less', 'watch']);
+  runsequence('browserify_coffee', 'less', 'views', 'browsersync', 'watch');
 });
 
 
