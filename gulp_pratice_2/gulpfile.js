@@ -1,6 +1,6 @@
 /**
  * initial
- * local install: npm install --save-dev gulp gulp-less gulp-coffee gulp-uglify gulp-clean gulp-notify gulp-plumber browser0sync gulp-browserify gulp-jade gulp-rename gulp-watch gulp-filter run-sequence gulp-util gulp-coffeelint coffeelint-stylish gulp-htmlmin gulp-autoprefixer gulp-minify-css gulp-rev-collector
+ * local install: npm install --save-dev gulp gulp-less gulp-coffee gulp-uglify gulp-clean gulp-notify gulp-plumber browser-sync gulp-browserify gulp-jade gulp-rename gulp-watch gulp-filter run-sequence gulp-util gulp-coffeelint coffeelint-stylish gulp-htmlmin gulp-autoprefixer gulp-minify-css gulp-rev-collector
  */
 
 /**
@@ -39,7 +39,7 @@ var root = {
   src: 'src',
   dev: 'dev',
   dist: 'dist'
-}
+};
 // 开发环境路径
 var path = {
   views: {
@@ -70,12 +70,12 @@ var path = {
   clean: {
     src: root.dev
   }
-}
+};
 // 打包环境路径
 
 var module_path = {
   browsersync: {
-    src: [root.dev + '/pages/**', root.dev + '/*.html']
+    src: [root.dev + '/pages/**/*', root.dev + '/*.html']
   },
   uglify: {
     sequences     : false,  // join consecutive statemets with the “comma operator”
@@ -98,7 +98,7 @@ var module_path = {
     warnings      : false,  // warn about potentially dangerous optimizations/code
     global_defs   : {}     // global definitions
   }
-}
+};
 
 
 /**
@@ -151,8 +151,8 @@ gulp.task('browserify_module', function(){
 });
 gulp.task('browserify_coffee', function(){
   gulp.src(path.scripts.src, { read: false })
+    .pipe(gwatch(path.scripts.src, { read: false }))
     .pipe(plumber())
-    .pipe(gwatch(path.scripts.src), {read: false })
     .pipe(browserify({
       debug: true,
       transform: ['coffeeify'],
@@ -162,7 +162,6 @@ gulp.task('browserify_coffee', function(){
       path.extname = '.js'
     }))
     .pipe(gulp.dest(path.scripts.dev))
-    .pipe(reload({stream: true}))
     ;
 });
 gulp.task('validate_coffee', function() {
@@ -189,10 +188,8 @@ gulp.task('less', function() {
     .pipe(plumber())
     .pipe(gwatch(path.styles.src))
     .pipe(less())
-    .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
     .pipe(gulp.dest(path.styles.dev))
     .pipe(reload({stream: true}))
-    .pipe(notify({message:'Less task complete'}));
 });
 
 gulp.task('clean', function() {
@@ -204,17 +201,15 @@ gulp.task('watch', function(err){
   gwatch(root.src + '/**', function(event) {
     // console.log(event.name, event.verbose, event.base, event)
     if (event.event === 'unlink') {
-      runsequence('clean',
-                ['views', 'browserify_coffee', 'less']
-        );
+      runsequence('clean',['views', 'browserify_coffee', 'less']);
     }
   });
   // 由于使用了browserify，一个文件的改变会影响所有其它引用到他的文件，所以应该重新编译
-  gwatch(path.own_module.src, function(event) {
-    if (event.event !== 'unlink') {
-      runsequence('browserify_coffee');       
-    }
-  })
+  // gwatch(path.own_module.src, function(event) {
+    // if (event.event !== 'unlink') {
+      // runsequence('browserify_coffee');       
+    // }
+  // })
 
 });
 
